@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "kokoro-snap-server"
 version = "0.1.0"
 description = "Local OpenAI-style TTS API adapter for Kokoro ONNX"
-requires-python = ">=3.10,<3.14"
+requires-python = ">=3.10"
 dependencies = ["kokoro-onnx==0.6.1", "numpy>=2,<3"]
 
 [project.optional-dependencies]
