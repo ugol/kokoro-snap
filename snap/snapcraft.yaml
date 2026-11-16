@@ -1,0 +1,66 @@
+# INTEGRATION DRAFT, NOT YET SNAPCRAFT-VALIDATED.
+name: kokoro
+title: Kokoro TTS
+base: core24
+version: '0.1'
+summary: Local text-to-speech inference with Kokoro 82M
+description: |
+  Kokoro 82M speech generation using ONNX Runtime.
+  The first engine targets CPUs on amd64 and arm64.
+grade: devel
+confinement: strict
+assumes: [snapd2.68]
+platforms:
+  amd64:
+  arm64:
+environment:
+  SNAP_COMPONENTS: /snap/$SNAP_INSTANCE_NAME/components/$SNAP_REVISION
+  PYTHONPATH: $SNAP/lib/python3.12/site-packages
+slots:
+  provider:
+    interface: content
+    content: inference-provider
+    source:
+      read: [$SNAP_COMMON/share/provider]
+apps:
+  kokoro:
+    command: bin/modelctl
+    plugs: [network, hardware-observe]
+  server:
+    command: bin/server.sh
+    daemon: simple
+    plugs: [network-bind]
+parts:
+  cli:
+    plugin: dump
+    source:
+      - on amd64: https://github.com/canonical/inference-snaps/releases/download/v2.0.0-rc.1/modelctl-linux-amd64.tar.xz
+      - on arm64: https://github.com/canonical/inference-snaps/releases/download/v2.0.0-rc.1/modelctl-linux-arm64.tar.xz
+  engines:
+    plugin: dump
+    source: engines
+    organize: {"*": engines/}
+  runtimes:
+    plugin: dump
+    source: runtimes
+    organize: {"*": runtimes/}
+  models:
+    plugin: dump
+    source: models
+    organize: {"*": models/}
+  scripts:
+    plugin: dump
+    source: scripts
+    stage-packages: [jq]
+    organize: {"server.sh": bin/}
+  runtime-python:
+    plugin: python
+    source: .
+    python-packages:
+      - misaki-fork[en]
+    stage-packages:
+      - python3
+      - espeak-ng
+      - libsndfile1
+# TODO: package ONNX model and voices as snap component, test modelctl capability,
+# resolve runtime component, reserve an official port, audit licenses.

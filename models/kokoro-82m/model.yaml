@@ -1,0 +1,10 @@
+name: kokoro-82m
+description: Kokoro 82M multilingual TTS model in ONNX format
+model-card-url: https://huggingface.co/hexgrad/Kokoro-82M
+capabilities:
+  - text-to-speech
+components:
+  - model-kokoro-82m
+environment:
+  - KOKORO_MODEL_PATH=$SNAP_COMPONENTS/model-kokoro-82m/kokoro-v1.0.onnx
+  - KOKORO_VOICES_PATH=$SNAP_COMPONENTS/model-kokoro-82m/voices-v1.0.bin

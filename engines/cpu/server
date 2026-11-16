@@ -1,0 +1,5 @@
+#!/bin/bash
+set -euo pipefail
+export KOKORO_PORT="$(modelctl get http.port)"
+export KOKORO_HOST="$(modelctl get http.host)"
+exec "$SNAP/bin/python3" -m kokoro_server "$@"

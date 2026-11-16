@@ -1,0 +1,7 @@
+name: kokoro-onnx
+servers:
+  openai:
+    protocol: http
+    base-path: /v1
+components:
+  - kokoro-runtime
